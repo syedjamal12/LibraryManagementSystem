@@ -33,7 +33,7 @@ router.post(
   borrowBookController.borrowBook
 );
 router.put(
-  "/update-borrow-status",
+  "/update-borrow-status/:bookId",
   isAdminAuthenticated,
   borrowBookController.updateBorrowBook
 );

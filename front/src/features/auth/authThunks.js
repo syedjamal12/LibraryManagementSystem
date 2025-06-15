@@ -9,6 +9,7 @@ import {
   FETCH_ME,
   FETCH_USERS,
   LOGIN_API,
+  RETURN_BOOK,
   UPDATE_BOOK,
 } from "../../api/api";
 
@@ -112,6 +113,29 @@ export const borrowBook = createAsyncThunk(
   }
 );
 
+export const returnBook = createAsyncThunk(
+  "auth/returnBook",
+  async (bookId, thunkAPI) => {
+    try {
+      const res = await fetch(`${RETURN_BOOK}/${bookId}`, {
+        method: "PUT",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      console.log("returnBook response data:", data);
+
+      if (!data.success) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      return data.bookUpdate;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 export const updateBook = createAsyncThunk(
   "auth/updateBook",
   async ({ id, formData }, thunkAPI) => {
@@ -130,7 +154,7 @@ export const updateBook = createAsyncThunk(
         throw new Error(data.message || "Something went wrong");
       }
 
-      return data.book;
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

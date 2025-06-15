@@ -25,3 +25,5 @@ export const UPDATE_BOOK = API_URL + "/update-book";
 export const DELETE_BOOK = API_URL + "/delete-book";
 
 export const FETCH_BORROWED_BOOKS = API_URL + "/get-borrow-book";
+
+export const RETURN_BOOK = API_URL + "/update-borrow-status";

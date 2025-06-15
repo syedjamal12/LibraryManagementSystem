@@ -92,7 +92,9 @@ class borrowBookController {
     }
   }
   static async updateBorrowBook(req, res) {
-    const { bookId, returnStatus } = req.body; // renamed 'return' to 'returnStatus'
+    const { bookId } = req.params;
+    // renamed 'return' to 'returnStatus'
+    let returnStatus = "Return";
     const user = req.user;
     if (!bookId || !returnStatus) {
       return res.status(404).json({

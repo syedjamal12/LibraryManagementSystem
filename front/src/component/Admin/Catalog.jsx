@@ -2,9 +2,17 @@ import { useEffect, useState } from "react";
 import { FaSquareCheck } from "react-icons/fa6";
 import { PiKeyReturnBold } from "react-icons/pi";
 import { useSelector } from "react-redux";
+import ReturnBookPopup from "./Popup/ReturnBookPopup";
 
 const Catalog = () => {
   const [filter, setFilter] = useState("borrowed");
+  const [returnBookPopup, setReturnBookPopup] = useState(false);
+  const [bookId, setBookId] = useState(null);
+
+  function returnBookPop(bookId) {
+    setReturnBookPopup(true);
+    setBookId(bookId);
+  }
 
   const formatDateAndTime = (timeStamp) => {
     const date = new Date(timeStamp);
@@ -26,6 +34,7 @@ const Catalog = () => {
   };
 
   const BorrowedBooks = useSelector((state) => state.auth.BorrowedBooks.Books);
+  // console.log("borrow book", BorrowedBooks);
   const todayOnly = new Date(new Date().toDateString());
 
   let BorrowBooks = BorrowedBooks.filter((book) => {
@@ -45,8 +54,8 @@ const Catalog = () => {
     } else {
       setBooksData(OverDueBooks);
     }
-  }, [filter]);
-  console.log("booooooo", BooksData);
+  }, [filter, BorrowedBooks]);
+  // console.log("booooooo", BooksData);
 
   return (
     <>
@@ -97,6 +106,8 @@ const Catalog = () => {
                   <th className="px-4 py-2 text-left">Username</th>
                   <th className="px-4 py-2 text-left">Email</th>
                   <th className="px-4 py-2 text-left">Price</th>
+                  <th className="px-4 py-2 text-left">Due Price</th>
+
                   <th className="px-4 py-2 text-left">Due Date</th>
                   <th className="px-4 py-2 text-left">Date & Time</th>
                   <th className="px-4 py-2 text-left">Return</th>
@@ -113,13 +124,18 @@ const Catalog = () => {
                     <td className="px-4 py-2">{book?.studentFirstName}</td>
                     <td className="px-4 py-2">{book?.studentEmail}</td>
                     <td className="px-4 py-2">{book?.price}</td>
+                    <td className="px-4 py-2">{book?.dueCharge}</td>
+
                     <td className="px-4 py-2">{formatDate(book?.dueDate)}</td>
                     <td className="px-4 py-2">
                       {formatDateAndTime(book?.createdAt)}
                     </td>
                     <td className="px-4 py-2">
                       {book.type == "Non-Return" ? (
-                        <PiKeyReturnBold className="w-6 h-6" />
+                        <PiKeyReturnBold
+                          className="w-6 h-6"
+                          onClick={() => returnBookPop(book._id)}
+                        />
                       ) : (
                         <FaSquareCheck className="w-6 h-6" />
                       )}
@@ -135,9 +151,12 @@ const Catalog = () => {
           </h3>
         )}
       </main>
-      {/* {
-      returnBookPopup && <ReturnBookPopup bookId={borrowedBookId} email={email} />
-    } */}
+      {returnBookPopup && (
+        <ReturnBookPopup
+          bookId={bookId}
+          setReturnBookPopup={setReturnBookPopup}
+        />
+      )}
     </>
   );
 };

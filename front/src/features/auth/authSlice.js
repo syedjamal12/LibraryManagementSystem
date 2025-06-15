@@ -9,6 +9,7 @@ import {
   fetchMe,
   fetchUsers,
   loginThunk,
+  returnBook,
   updateBook,
 } from "./authThunks";
 
@@ -38,6 +39,11 @@ const initialState = {
   UpdateBook: {
     loading: false,
     error: null,
+  },
+  ReturnBook: {
+    loading: false,
+    error: null,
+    ReturnData: {},
   },
   DeleteBook: {
     loading: false,
@@ -145,6 +151,19 @@ const authSlice = createSlice({
       })
       .addCase(updateBook.rejected, (state, action) => {
         state.UpdateBook.loading = false;
+      })
+
+      .addCase(returnBook.pending, (state) => {
+        state.ReturnBook.loading = true;
+        state.ReturnBook.error = null;
+      })
+      .addCase(returnBook.fulfilled, (state, action) => {
+        state.ReturnBook.loading = false;
+        state.ReturnBook.error = null;
+        state.ReturnBook.ReturnData = action.payload;
+      })
+      .addCase(returnBook.rejected, (state, action) => {
+        state.ReturnBook.loading = false;
       })
 
       .addCase(deleteBook.pending, (state) => {
