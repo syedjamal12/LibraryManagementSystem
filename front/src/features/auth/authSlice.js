@@ -43,7 +43,7 @@ const initialState = {
   ReturnBook: {
     loading: false,
     error: null,
-    ReturnData: {},
+    ReturnData: [],
   },
   DeleteBook: {
     loading: false,
@@ -158,6 +158,7 @@ const authSlice = createSlice({
         state.ReturnBook.error = null;
       })
       .addCase(returnBook.fulfilled, (state, action) => {
+        console.log("payloaddd", action.payload);
         state.ReturnBook.loading = false;
         state.ReturnBook.error = null;
         state.ReturnBook.ReturnData = action.payload;

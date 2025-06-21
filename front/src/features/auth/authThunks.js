@@ -129,7 +129,7 @@ export const returnBook = createAsyncThunk(
         throw new Error(data.message || "Something went wrong");
       }
 
-      return data.bookUpdate;
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

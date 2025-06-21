@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   fetchBorrowedBooks,
   returnBook,
@@ -7,10 +8,15 @@ import {
 const ReturnBookPopup = ({ bookId, setReturnBookPopup }) => {
   const dispatch = useDispatch();
   const Loading = useSelector((state) => state.auth.ReturnBook.loading);
+  const data = useSelector((state) => state.auth.ReturnBook.ReturnData);
+  console.log("data on returnbook", data);
 
   const handleReturnBook = async (e) => {
     e.preventDefault();
     await dispatch(returnBook(bookId));
+    if (data.success) {
+      toast.success(data.message);
+    }
     await dispatch(fetchBorrowedBooks());
     setReturnBookPopup(false);
   };
